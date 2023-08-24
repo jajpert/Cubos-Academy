@@ -1,14 +1,17 @@
 {
-  "name": "controlador_rodadas",
+  "name": "02",
   "version": "1.0.0",
-  "description": "",
+  "description": "![](https://i.imgur.com/xG74tOh.png)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon ./src/index"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
   "dependencies": {
     "express": "^4.18.2"
   }
