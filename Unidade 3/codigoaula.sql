@@ -101,3 +101,77 @@ SELECT COALESCE(NULL, NULL, 'cenoura');
 SELECT CONCAT(nome, ' - ', COALESCE(telefone, email, 'não possui telefone')) FROM usuarios;
 
 SELECT idade, COUNT(id) FROM usuarios GROUP BY idade ORDER BY idade;
+
+create table editora (
+    id serial primary key,
+    nome text not null,
+    cnpj text unique,
+    data_cadastro timestamp default now()
+);
+
+insert into editoras (nome, cnpj) values ('Cubos Academy', '00011222333')
+
+create table livros (
+  isbn integer primary key,
+  editora_id integer references editoras(id),
+  titulo text not null,
+  data_publicacao date not null
+);
+
+create table livros (
+  isbn integer primary key,
+  editora_id integer,
+  foreign key editora_id references editoras(id)
+);
+
+insert into livros (isbn, editora_id, titulo, data_publicacao) values (12345, 1, 'Backend com Node.js', '2023-10-05');
+
+create table enderecos (
+  id serial primary key,
+  editora_id integer references editoras(id),
+  cep text not null,
+  rua text,
+  bairro text,
+  cidade text, 
+  estado char(2),
+  pais text
+);
+
+insert into enderecos (editora_id, cep, rua, bairro, cidade, estado) values (1, '79080740', 'anhanguera', 'vila ipiranga', 'campo grande', 'MS');
+
+create table categorias (
+  id serial primary key,
+  nome text not null
+);
+
+create table livro_categoria (
+  livro_isbn integer references livros(isbn),
+  categoria_id integer references categorias(id)
+);
+
+insert into categorias (nome) values ('Tecnologia'), ('Programação'), ('Node.js');
+
+insert into livro_categoria (livro_isbn, categoria_id) values (12345, 1), (12345, 3), (12346, 2);
+
+create table comentarios (
+  id serial primary key,
+  descricao text not null,
+  comentario_id integer references comentarios(id),
+  livro_id integer references livros(isbn)
+);
+
+insert into comentarios (livro_id, descricao) values (12345, 'muito bom');
+insert into comentarios (comentario_id, descricao) values (1, 'tambem achei');
+
+alter table categorias add column descricao text default 'sem descrição';
+alter table categorias drop column descricao;
+
+alter table comentarios alter column descricao type varchar(100)
+
+create table telefones (
+  id serial primary key,
+  editora_id integer,
+  telefone text
+);
+
+alter table telefones add constraint fk_telefones_editoras foreign key (editora_id) references editoras(id);
